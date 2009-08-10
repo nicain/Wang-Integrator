@@ -52,6 +52,6 @@ if plotsOn==1
     unix(['open ./savedFigures/',outputFileName,'_','FR','.eps']);
 end
 
-save(outputFileName,'FRE1','FRE2','plotT','increment')
+save([pwd,'/savedResults/',outputFileName],'FRE1','FRE2','plotT','increment')
 
 return
