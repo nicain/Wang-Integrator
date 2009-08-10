@@ -9,7 +9,8 @@ import time
 import random
 
 # Declare settings:
-numberOfTrials=1				# Number of calls of the spikingNetwork.c file
+trialRangeBegin=11				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
+trialRangeEnd=15				
 jobNameBase='Temp'				# Unique base-name for saving results and plots
 dt = .02;						# Time-step, in ms.
 simDuration = 200;				# Simulation duration, in ms.
@@ -33,12 +34,12 @@ os.system(compileString)
 # Run Simulations, each time creating a data output file:
 print '  Running Simulations ...'
 tBegin=time.mktime(time.localtime())
-for i in range(1,numberOfTrials + 1):
+for i in range(trialRangeBegin,trialRangeEnd + 1):
 	jobName=jobNameBase + '_' + str(i)
 	print '    Simulation # ' + str(i) + ' now running...'
 	os.system(runPrefix + 'spikingNetwork ' + str(simDuration/dt) + ' ' + str(stimOnset/dt) + ' ' + str(dt))
 	print '    Compiling results ...'
-	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); getFR_simple(\'' + jobName + '\'' + ',0,' + str(simDuration) + ',' + str(dt) + ');exit"')
+	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); getFR(\'' + jobName + '\'' + ',0,' + str(simDuration) + ',' + str(dt) + ');exit"')
 
 # Find AIC for this trial:
 print '  Performing model comparison ...'

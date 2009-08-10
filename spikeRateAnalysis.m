@@ -19,8 +19,8 @@ for n=1:numberOfJobs
 end
 
 % Create a design matrix (dm)
-A = [0 0; 1 0; 1 1];
-B = [1 0 0; 1 1 0; 1 0 1; 1 1 1];
+A = [0 0; 1 0; 0 1; 1 1];
+B = [ 0 0 1; 0 1 0; 0 1 1; 1 0 0; 1 0 1; 1 1 0; 1 1 1];
 
 dm = [];
 for i = 1:size(B,1)
@@ -199,12 +199,14 @@ if plotsOn==1
     figure(2)
     clf
     barh(optimalModelCountPre)
+    set(gca,'YTick',1:1:length(description))
     set(gca,'YTickLabel',description)
     title('AIC Minimization Histogram, Pre-Stimulus')
     
     figure(3)
     clf
     barh(optimalModelCountPost)
+    set(gca,'YTick',1:1:length(description))
     set(gca,'YTickLabel',description)
     title('AIC Minimization Histogram, Post-Stimulus')
 
@@ -236,32 +238,30 @@ return
 
 function title = modelDescription(designVector)
     title = 'dX = ';
-    if any(designVector(1:2))
-        title = [title, '('];
-        if designVector(1) == 1
-            title = [title, 'a'];
-        end
-        if designVector(2) == 1
-            title = [title, ' + b*X'];
-        end
-        title = [title, ')*dt'];
+    switch mat2str(designVector(1:2))
+        case '[1 0]'
+            title = [title,'a*dt'];
+        case '[0 1]'
+            title = [title,'b*X*dt'];
+        case '[1 1]'
+            title = [title,'(a + bX)*dt'];
     end
 
-    if any(designVector(3:5))
-        if any(designVector(1:2))
-            title = [title, ' + ('];
-        else
-            title = [title, '('];
-        end
-        if designVector(3) == 1
-            title = [title, 'c'];
-        end
-        if designVector(4) == 1
-            title = [title, ' + d*X'];
-        end
-        if designVector(5) == 1
-            title = [title, ' + e*sqrt(X)'];
-        end
-        title = [title, ')*dW'];
+    switch mat2str(designVector(3:5))
+        case '[0 0 1]'
+            title = [title,'e*sqrt(X)*dW'];
+        case '[0 1 0]'
+            title = [title,'d*X*dW'];
+        case '[0 1 1]'
+            title = [title,'(d*X + e*sqrt(X))*dW'];
+        case '[1 0 0]'
+            title = [title,'(c*dW'];
+        case '[1 0 1]'
+            title = [title,'(c + e*sqrt(X))*dW'];
+        case '[1 1 0]'
+            title = [title,'(c + d*X)*dW'];
+        case '[1 1 1]'
+            title = [title,'(c + d*X + e*sqrt(X))*dW'];
     end
+
 return
