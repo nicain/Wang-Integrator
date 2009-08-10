@@ -24,7 +24,7 @@ numberOfTrials = 12;
 
 # Declare strings that vary between OS:
 if sys.platform == 'darwin':
-	compileString='make'
+	compileString='gcc -o spikingNetwork spikingNetwork.c'
 	matlabSettings = '-nosplash -nojvm -r'
 	runPrefix = './'
 elif sys.platform == 'win32':
