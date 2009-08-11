@@ -38,7 +38,7 @@ for n=1:numberOfJobs
     end
     for i=1:numberOfModels;
         mu{i} = @(X,Y,theta,dv) theta(1).*dv(1) + theta(2).*dv(2).*X;
-        g{i} = @(X,Y,theta,dv) abs(theta(3).*dv(3) + theta(4).*dv(4).*Y + theta(5).*dv(5).*sqrt(abs(Y)));
+        g{i} = @(X,Y,theta,dv) theta(3).*dv(3) + theta(4).*dv(4).*abs(Y) + theta(5).*dv(5).*sqrt(abs(Y));
         IC{n,i} = initial_condition;
         theta{n,i} = logical(dm(i,:));
         description{i} = modelDescription(dm(i,:));
@@ -84,7 +84,7 @@ for n=1:numberOfJobs
     for i=pre_candidates
         dv = dm(i,:);
         % Develop f:
-        f{i}=@(xNext,xCurr,yCurr,theta,dv) normpdf(xNext,xCurr+mu{i}(xCurr,yCurr,theta,dv)*dt,abs(g{i}(xCurr,yCurr,theta,dv)*sqrt(dt)));
+        f{i}=@(xNext,xCurr,yCurr,theta,dv) normpdf(xNext,xCurr+mu{i}(xCurr,yCurr,theta,dv)*dt,abs(g{i}(xCurr,yCurr,theta,dv))*sqrt(dt));
 
         % Develop Log-Likelyhood function, using the looping method to help:
         L{i}=@(theta) likelyhoodFunction(theta,f{i},xCurr,yCurr,dv);
@@ -221,7 +221,7 @@ if plotsOn==1
     saveas(3,[saveFigureBase,'_AICPost.eps'],'eps')
     saveas(3,[saveFigureBase,'_AICPost.fig'],'fig')
     
-    save([jobNameBase,'_',x_label,'_',y_label,'_results.mat'],'AICPre','AICPost','thetaPreMatrix','thetaPostMatrix');
+    save([workingDirectory,'/savedResults/',jobNameBase,'_',x_label,'_',y_label,'_results.mat'],'AICPre','AICPost','thetaPreMatrix','thetaPostMatrix');
 end 
 
 return
