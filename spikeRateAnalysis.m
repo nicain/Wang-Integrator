@@ -201,17 +201,19 @@ if plotsOn==1
     % Bar chart to compare Akaiki Information for each model;
     figure(2)
     clf
-    barh(optimalModelCountPre)
-    set(gca,'YTick',1:1:length(description))
-    set(gca,'YTickLabel',description)
-    title('AIC Minimization Histogram, Pre-Stimulus')
+    ind=find(optimalModelCountPre~=0);
+    barh(optimalModelCountPre(ind));
+    set(gca,'YTick',[(1/7):(1/7):length(ind)]+(.5-1/7));
+    set(gca,'YTickLabel',getDescriptionWithTheta(description,thetaPreMatrix,ind))
+    title(['AIC Minimization Histogram, Pre-Stimulus: X=',x_label,', Y=',y_label]);
     
     figure(3)
     clf
-    barh(optimalModelCountPost)
-    set(gca,'YTick',1:1:length(description))
-    set(gca,'YTickLabel',description)
-    title('AIC Minimization Histogram, Post-Stimulus')
+    ind=find(optimalModelCountPost~=0);
+    barh(optimalModelCountPost(ind));
+    set(gca,'YTick',[(1/7):(1/7):length(ind)]+(.5-1/7));
+    set(gca,'YTickLabel',getDescriptionWithTheta(description,thetaPreMatrix,ind))
+    title(['AIC Minimization Histogram, Post-Stimulus: X=',x_label,', Y=',y_label]);
 
     % Save figures
     saveFigureBase=[saveDirectory,'/',jobNameBase,'_',x_label,'_',y_label];
@@ -226,6 +228,56 @@ if plotsOn==1
     
     save([workingDirectory,'/savedResults/',jobNameBase,'_',x_label,'_',y_label,'_results.mat'],'AICPre','AICPost','thetaPreMatrix','thetaPostMatrix');
 end 
+
+return
+
+%% getDescriptionWithTheta
+
+function descriptionNew=getDescriptionWithTheta(description,thetaMatrix,ind)
+
+c=1;
+for i=1:length(ind)
+    descriptionNew{c}=' ';
+    c=c+1;
+    nOfTheta=0;
+    for j=5:-1:1
+        tmp=squeeze(thetaMatrix(ind(i),j,:));
+        ind2=find(~isnan(tmp));
+        if length(ind2)~=0
+            currentMean=mean(tmp(ind2));
+            currentStdDev=std(tmp(find(~isnan(tmp))));
+            currentString=[num2str(currentMean,'%10.2f'),' (',num2str(currentStdDev,'%10.2f'),')  '];
+            switch j
+                case 1
+                    descriptionNew{c}=['a = ',currentString];
+                    nOfTheta=nOfTheta+1;
+                    c=c+1;
+                case 2
+                    descriptionNew{c}=['b = ',currentString];
+                    nOfTheta=nOfTheta+1;
+                    c=c+1;
+                case 3
+                    descriptionNew{c}=['c = ',currentString];
+                    nOfTheta=nOfTheta+1;
+                    c=c+1;
+                case 4
+                    descriptionNew{c}=['d = ',currentString];
+                    nOfTheta=nOfTheta+1;
+                    c=c+1;
+                case 5
+                    descriptionNew{c}=['e = ',currentString];
+                    nOfTheta=nOfTheta+1;
+                    c=c+1;
+            end
+        end
+    end
+    descriptionNew{c}=description{ind(i)};
+    c=c+1;
+    for k=1:5-nOfTheta
+        descriptionNew={descriptionNew{1:(end-nOfTheta-1)},' ',descriptionNew{(end-nOfTheta):end}};
+        c=c+1;
+    end
+end
 
 return
 
@@ -272,7 +324,7 @@ function title = modelDescription(designVector)
         case '[0 1]'
             title = [title,'b*X*dt'];
         case '[1 1]'
-            title = [title,'(a + bX)*dt'];
+            title = [title,'(a + bX)*dt + '];
     end
 
     switch mat2str(designVector(3:5))
