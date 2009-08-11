@@ -9,15 +9,15 @@ import time
 import random
 
 # Simulation settings:
-trialRangeBegin=11				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
-trialRangeEnd=12		
+trialRangeBegin=101				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
+trialRangeEnd=250	
 jobNameBase='2sim_1on'				# Unique base-name for saving results and plots
 dt = .02;						# Time-step, in ms.
 simDuration = 2000;				# Simulation duration, in ms.
 stimOnset = 1000;				# Time for stimulus onset, in ms.
 
 # Analysis settings:
-analyze = 1;
+analyze = 0;
 x_label = 'S1';
 y_label = 'S1';
 numberOfTrials = 12;
