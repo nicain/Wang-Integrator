@@ -180,6 +180,9 @@ for n=1:numberOfJobs
 end
 warning on all
 
+thetaPreMatrix=gPosNegFilter(thetaPreMatrix);
+thetaPostMatrix=gPosNegFilter(thetaPostMatrix);
+
 %% Plotting figures
 
 if plotsOn==1
@@ -226,6 +229,31 @@ end
 
 return
 
+%% gPosNegFilter:
+
+function A=gPosNegFilter(A)
+
+for n=1:size(A,3)
+    for i=1:size(A,1)
+        if sum(isnan(A(i,:,n)))~=5
+            if ~isnan(A(i,3,n))
+                if A(i,3,n)<0
+                    A(i,3:5,n)=-1*A(i,3:5,n);
+                end
+            elseif ~isnan(A(i,4,n))
+                if A(i,4,n)<0
+                    A(i,4:5,n)=-1*A(i,4:5,n);
+                end
+            elseif ~isnan(A(i,5,n))
+                if A(i,5,n)<0
+                    A(i,5,n)=-1*A(i,5,n);
+                end
+            end
+        end
+    end
+end
+
+return
 %% likelyhoodFunction:
 
 function returnMe=likelyhoodFunction(theta,f,x,y,dv)
