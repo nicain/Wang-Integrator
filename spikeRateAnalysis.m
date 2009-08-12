@@ -101,11 +101,17 @@ for n=1:numberOfJobs
             AICPre(n,i)=2*likelihoodPre(n,i)+2*length(thetaEstPre{n,i});
             thetaVector(logical(dm(i,:))) = thetaEstPre{n,i}(logical(dm(i,:)));
         else
-            [thetaEstPre{n,i},likelihoodPre(n,i),exitflag]=fminunc(L{i},IC{n,i},options);
-            if exitflag==1
-                AICPre(n,i)=2*likelihoodPre(n,i)+2*length(thetaEstPre{n,i});
-                thetaVector(logical(dm(i,:))) = thetaEstPre{n,i}(logical(dm(i,:)));
-            else
+            try
+                [thetaEstPre{n,i},likelihoodPre(n,i),exitflag]=fminunc(L{i},IC{n,i},options);
+                if exitflag==1
+                    AICPre(n,i)=2*likelihoodPre(n,i)+2*length(thetaEstPre{n,i});
+                    thetaVector(logical(dm(i,:))) = thetaEstPre{n,i}(logical(dm(i,:)));
+                else
+                    AICPre(n,i)=Inf;
+                    likelihoodPre(n,i)=-Inf;
+                end
+            catch
+                warning(['Bug hit in fminunc: n=',num2str(n),', i=',num2str(i)]);
                 AICPre(n,i)=Inf;
                 likelihoodPre(n,i)=-Inf;
             end
@@ -161,13 +167,19 @@ for n=1:numberOfJobs
             AICPost(n,i)=2*likelihoodPost(n,i)+2*length(thetaEstPost{n,i});
             thetaVector(logical(dm(i,:))) = thetaEstPost{n,i}(logical(dm(i,:)));
         else
-            [thetaEstPost{n,i},likelihoodPost(n,i),exitflag]=fminunc(L{i},IC{n,i},options);
-            if exitflag==1
-                AICPost(n,i)=2*likelihoodPost(n,i)+2*length(thetaEstPost{n,i});
-                thetaVector(logical(dm(i,:))) = thetaEstPost{n,i}(logical(dm(i,:)));
-            else
-                AICPost(n,i)=Inf;
-                likelihoodPost(n,i)=-Inf;
+            try
+                [thetaEstPost{n,i},likelihoodPost(n,i),exitflag]=fminunc(L{i},IC{n,i},options);
+                if exitflag==1
+                    AICPost(n,i)=2*likelihoodPost(n,i)+2*length(thetaEstPost{n,i});
+                    thetaVector(logical(dm(i,:))) = thetaEstPost{n,i}(logical(dm(i,:)));
+                else
+                    AICPost(n,i)=Inf;
+                    likelihoodPost(n,i)=-Inf;
+                end
+            catch
+                warning(['Bug hit in fminunc: n=',num2str(n),', i=',num2str(i)]);
+                AICPre(n,i)=Inf;
+                likelihoodPre(n,i)=-Inf;
             end
         end
         thetaPostMatrix(i,:,n) = thetaVector;
