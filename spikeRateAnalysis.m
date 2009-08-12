@@ -320,9 +320,9 @@ function title = modelDescription(designVector)
     title = 'dX = ';
     switch mat2str(designVector(1:2))
         case '[1 0]'
-            title = [title,'a*dt'];
+            title = [title,'a*dt + '];
         case '[0 1]'
-            title = [title,'b*X*dt'];
+            title = [title,'b*X*dt + '];
         case '[1 1]'
             title = [title,'(a + bX)*dt + '];
     end
