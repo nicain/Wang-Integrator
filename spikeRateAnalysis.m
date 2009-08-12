@@ -224,7 +224,7 @@ if plotsOn==1
     ind=find(optimalModelCountPost~=0);
     barh(optimalModelCountPost(ind));
     set(gca,'YTick',[(1/7):(1/7):length(ind)]+(.5-1/7));
-    set(gca,'YTickLabel',getDescriptionWithTheta(description,thetaPreMatrix,ind))
+    set(gca,'YTickLabel',getDescriptionWithTheta(description,thetaPostMatrix,ind))
     title(['AIC Minimization Histogram, Post-Stimulus: X=',x_label,', Y=',y_label]);
 
     % Save figures
@@ -341,19 +341,19 @@ function title = modelDescription(designVector)
 
     switch mat2str(designVector(3:5))
         case '[0 0 1]'
-            title = [title,'e*sqrt(X)*dW'];
+            title = [title,'e*sqrt(Y)*dW'];
         case '[0 1 0]'
-            title = [title,'d*X*dW'];
+            title = [title,'d*Y*dW'];
         case '[0 1 1]'
-            title = [title,'(d*X + e*sqrt(X))*dW'];
+            title = [title,'(d*Y + e*sqrt(Y))*dW'];
         case '[1 0 0]'
             title = [title,'(c*dW'];
         case '[1 0 1]'
-            title = [title,'(c + e*sqrt(X))*dW'];
+            title = [title,'(c + e*sqrt(Y))*dW'];
         case '[1 1 0]'
-            title = [title,'(c + d*X)*dW'];
+            title = [title,'(c + d*Y)*dW'];
         case '[1 1 1]'
-            title = [title,'(c + d*X + e*sqrt(X))*dW'];
+            title = [title,'(c + d*Y + e*sqrt(Y))*dW'];
     end
 
 return
