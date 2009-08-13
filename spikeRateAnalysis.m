@@ -256,9 +256,9 @@ for i=1:length(ind)
         tmp=squeeze(thetaMatrix(ind(i),j,:));
         ind2=find(~isnan(tmp));
         if length(ind2)~=0
-            currentMean=mean(tmp(ind2));
-            currentStdDev=std(tmp(find(~isnan(tmp))));
-            currentString=[num2str(currentMean,'%10.2f'),' (',num2str(currentStdDev,'%10.2f'),')  '];
+            currentMedian=median(tmp(ind2));
+            currentQuart=prctile(tmp(find(~isnan(tmp))),[25,74]);
+            currentString=[num2str(currentMedian,'%10.3f'),' (',num2str(currentQuart(1),'%10.3f'),',',num2str(currentQuart(2),'%10.3f'),')  '];
             switch j
                 case 1
                     descriptionNew{c}=['a = ',currentString];
