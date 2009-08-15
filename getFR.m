@@ -1,5 +1,5 @@
 function getFR_simple(outputFileName,plotsOn,Time,dt)
-
+% I added a comment.
 % Declare settings:
 Nall = 2000;
 Eall = 1600;
