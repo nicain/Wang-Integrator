@@ -4,7 +4,7 @@
 /* Xiao-Jing Wang (2002) Neuron 36, 955-968 */
 /* Shin Kira*/
 /*******************************************************************************/
-
+// I am adding a comment here.
 // Include external libraries:
 #include <stdio.h>
 #include <math.h>
