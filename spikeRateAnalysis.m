@@ -242,7 +242,7 @@ if plotsOn==1
     hold off
     xlabel('Time (ms)');
     ylabel('Firing Rate (Spikes/sec)');
-    ylim([min(min(FRES1-FRES2)) max(max(FREPlot))])
+    ylim([min(min(FREPlot)) max(max(FREPlot))])
     title('Difference in FR')
     
     % Bar chart to compare Akaiki Information for each model;
