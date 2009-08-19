@@ -12,18 +12,23 @@ increment=1;
 window=20;
 
 % Upload data:
-for n=1:numberOfJobs
-    currFullJobName=[loadDirectory,'/',jobNameBase,'_',num2str(n),'.mat'];
-    load(currFullJobName);
-    
-    % Backwards compatibility: create firing matrix HERE instead of in
-    % getFR.m
-    if strcmp(analysisType,'population')
-        [FRES1(n,:),FRES2(n,:),plotT]=getFR(spikeMatrix,Time,dt,increment,window);
-    else
-        disp('To Be Done')
-    end
+switch analysisType
+    case 'population'
+        for n=1:numberOfJobs
+            currFullJobName=[loadDirectory,'/',jobNameBase,'_',num2str(n),'.mat'];
+            load(currFullJobName);
+            [FRES1(n,:),FRES2(n,:),plotT]=getFR(spikeMatrix,Time,dt,increment,window);
+        end
+
+    case 'single'
+        %% To be completed
+        numberOfJobs=1;
+        
+    otherwise 
+        error('Unrecognized analysisType')
 end
+
+    
 
 % Create a design matrix (dm)
 A = [0 0; 1 0; 0 1; 1 1];
