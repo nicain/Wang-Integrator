@@ -45,7 +45,7 @@ for i in range(trialRangeBegin,trialRangeEnd + 1):
 	print '    Simulation # ' + str(i) + ' now running...'
 	os.system(runPrefix + 'spikingNetwork ' + str(simDuration/dt) + ' ' + str(stimOnset/dt) + ' ' + str(dt))
 	print '    Compiling results ...'
-	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); getSpikes(\'' + jobName + '\'' + str(simDuration) + ',' + str(dt) + ');exit"')
+	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); getSpikes(\'' + jobName + '\',' + str(simDuration) + ',' + str(dt) + ');exit"')
 
 # Find AIC for this trial:
 if analyze == 1:
