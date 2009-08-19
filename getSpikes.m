@@ -23,6 +23,6 @@ spikeMatrixSingleE1=spikeMatrix(:,E1cell);
 spikeMatrixSingleE2=spikeMatrix(:,E1cell+E2cell);
 
 % Save outpus
-save([pwd,'/savedResults/',outputFileName],'spikeMatrix','spikeMatrixSingleE1','spikeMatrixSingleE2');
+save([pwd,'/savedResults/',outputFileName],'spikeMatrix','spikeMatrixSingleE1','spikeMatrixSingleE2','Time','dt');
 
 return

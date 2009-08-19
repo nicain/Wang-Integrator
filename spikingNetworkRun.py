@@ -17,10 +17,11 @@ simDuration = 2000;				# Simulation duration, in ms.
 stimOnset = 1000;				# Time for stimulus onset, in ms.
 
 # Analysis settings:
-analyze = 0;
+analyze = 1;
+analysisType='population';
 x_label = 'S1';
 y_label = 'S1';
-numberOfTrials = 12;
+numberOfTrials = 1;
 
 # Declare strings that vary between OS:
 if sys.platform == 'darwin':
@@ -50,7 +51,7 @@ for i in range(trialRangeBegin,trialRangeEnd + 1):
 # Find AIC for this trial:
 if analyze == 1:
 	print '  Performing model comparison ...'
-	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); spikeRateAnalysis(\'' + jobNameBase + '\'' + ',' + str(numberOfTrials) + ',' + str(stimOnset) + ',\'' + x_label + '\',\'' + y_label + '\',1);exit"')
+	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); spikeRateAnalysis(\'' + jobNameBase + '\'' + ',' + str(numberOfTrials) + ',' + str(stimOnset) + ',\'' + x_label + '\',\'' + y_label + '\',\'' + analysisType + '\',1);exit"')
 else:
 	print '  Skipping model comparison'
 # Finalize

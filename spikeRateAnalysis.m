@@ -1,4 +1,4 @@
-function spikeRateAnalysis(jobNameBase,numberOfJobs,switchOver,x_label,y_label,plotsOn)
+function spikeRateAnalysis(jobNameBase,numberOfJobs,switchOver,x_label,y_label,analysisType,plotsOn)
 
 % Set up directory structure:
 workingDirectory=pwd;
@@ -8,14 +8,21 @@ loadDirectory=[workingDirectory,'/savedResults'];
 % Declare settings:
 maxEval=5000;
 maxIter=5000;
+increment=1;
+window=20;
 
 % Upload data:
 for n=1:numberOfJobs
     currFullJobName=[loadDirectory,'/',jobNameBase,'_',num2str(n),'.mat'];
     load(currFullJobName);
-    FRES1(n,:)=FRE1;
-    FRES2(n,:)=FRE2;
-    plotTMat(n,:)=plotT;
+    
+    % Backwards compatibility: create firing matrix HERE instead of in
+    % getFR.m
+    if strcmp(analysisType,'population')
+        [FRES1(n,:),FRES2(n,:),plotT]=getFR(spikeMatrix,Time,dt,increment,window);
+    else
+        disp('To Be Done')
+    end
 end
 
 % Create a design matrix (dm)
@@ -51,10 +58,7 @@ end
 
 % Initialize relevant variables
 options = optimset('MaxFunEvals', maxEval,'MaxIter',maxIter);
-
-dt=plotT(2)-plotT(1);
 onIndex=floor(switchOver/increment);
-
 pre_candidates  = 1:size(dm,1); % [1 2 3 7 8 9];
 post_candidates = 1:size(dm,1);
 
@@ -354,6 +358,33 @@ function title = modelDescription(designVector)
             title = [title,'(c + d*Y)*dW'];
         case '[1 1 1]'
             title = [title,'(c + d*Y + e*sqrt(Y))*dW'];
+    end
+
+return
+
+%% getFR:
+
+function [FRE1,FRE2,plotT]=getFR(spikeMatrix,Time,dt,increment,w)
+
+    % Declare settings:
+    Nall = 2000;
+    Eall = 1600;
+    Iall = 400;
+    f = 0.15;
+
+    % Initialize relevant variables
+    E1 = Eall * f;
+    E2 = Eall * f;
+
+    % Calculating the firing rate, sp/sec: 
+    totalLength=floor((Time/dt-w/dt-1)/(increment/dt));
+    FRE1=zeros(totalLength,1);
+    FRE2=zeros(totalLength,1);
+    plotT=zeros(totalLength,1);
+    for i=1:totalLength
+        FRE1(i) = sum(sum(spikeMatrix((1+(increment/dt)*(i-1)):((increment/dt)*(i-1)+w/dt),1:E1)))./(E1*w/1000);
+        FRE2(i) = sum(sum(spikeMatrix((1+(increment/dt)*(i-1)):((increment/dt)*(i-1)+w/dt),(E1+1):(E1+E2))))./(E2*w/1000);
+        plotT(i) = dt+i*increment;
     end
 
 return
