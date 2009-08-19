@@ -18,7 +18,7 @@ stimOnset = 1000;				# Time for stimulus onset, in ms.
 
 # Analysis settings:
 analyze = 1;
-analysisType='population';
+analysisType='population';  # 'population' or 'single'
 x_label = 'S1';
 y_label = 'S1';
 numberOfTrials = 1;

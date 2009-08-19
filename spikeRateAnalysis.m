@@ -9,7 +9,7 @@ loadDirectory=[workingDirectory,'/savedResults'];
 maxEval=5000;
 maxIter=5000;
 increment=1;
-window=20;
+w=20;
 
 % Upload data:
 switch analysisType
@@ -17,13 +17,27 @@ switch analysisType
         for n=1:numberOfJobs
             currFullJobName=[loadDirectory,'/',jobNameBase,'_',num2str(n),'.mat'];
             load(currFullJobName);
-            [FRES1(n,:),FRES2(n,:),plotT]=getFR(spikeMatrix,Time,dt,increment,window);
+            [FRES1(n,:),FRES2(n,:),plotT]=getFR(spikeMatrix,Time,dt,increment,w);
         end
 
     case 'single'
         %% To be completed
+        for n=1:numberOfJobs
+            currFullJobName=[loadDirectory,'/',jobNameBase,'_',num2str(n),'.mat'];
+            load(currFullJobName);
+            singleSpikesS1(:,n)=spikeMatrixSingleE1;
+            singleSpikesS2(:,n)=spikeMatrixSingleE2;
+        end
+        totalLength=floor((Time/dt-w/dt-1)/(increment/dt));
+        FRES1=zeros(1,totalLength);
+        FRES2=zeros(1,totalLength);
+        plotT=zeros(1,totalLength);
+        for i=1:totalLength
+            FRES1(i) = sum(sum(singleSpikesS1((1+(increment/dt)*(i-1)):((increment/dt)*(i-1)+w/dt),:)))./(numberOfJobs*w/1000);
+            FRES2(i) = sum(sum(singleSpikesS2((1+(increment/dt)*(i-1)):((increment/dt)*(i-1)+w/dt),:)))./(numberOfJobs*w/1000);
+            plotT(i) = dt+i*increment;
+        end
         numberOfJobs=1;
-        
     otherwise 
         error('Unrecognized analysisType')
 end
@@ -33,6 +47,10 @@ end
 % Create a design matrix (dm)
 A = [0 0; 1 0; 0 1; 1 1];
 B = [ 0 0 1; 0 1 0; 0 1 1; 1 0 0; 1 0 1; 1 1 0; 1 1 1];
+A = [1 1];
+B = [1 0 1; 1 1 0; 1 1 1];
+%A = [1 1];
+%B = [1 1 1];
 
 dm = [];
 for i = 1:size(B,1)
