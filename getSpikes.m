@@ -5,6 +5,8 @@ Nall = 2000;
 Eall = 1600;
 Iall = 400;
 f = 0.15;
+E1 = Eall * f;
+E2 = Eall * f;
 
 % Initialize relevant variables
 spikeMatrix = sparse(Time/dt,Nall);
@@ -20,7 +22,7 @@ clear('SN_spikes');
 E1cell=1;
 E2cell=1;
 spikeMatrixSingleE1=spikeMatrix(:,E1cell);
-spikeMatrixSingleE2=spikeMatrix(:,E1cell+E2cell);
+spikeMatrixSingleE2=spikeMatrix(:,E1+E2cell);
 
 % Save outpus
 save([pwd,'/savedResults/',outputFileName],'spikeMatrix','spikeMatrixSingleE1','spikeMatrixSingleE2','Time','dt');

@@ -228,13 +228,21 @@ if plotsOn==1
     % Plot firing rate of selective populations
     figure(1)
     clf
-    plot(plotT,FRES1-FRES2,'-r','LineWidth',1);
+	switch x_label
+        case 'S1'
+            FREPlot=FRES1;
+        case 'S1-S2'
+            FREPlot=FRES1-FRES2;
+        otherwise
+            error('I was not prepared for plotting this type of x_label')
+    end
+    plot(plotT,FREPlot,'-r','LineWidth',1);
     hold on
-        plot([switchOver,switchOver],[min(min(FRES1-FRES2)) max(max(FRES1-FRES2))],'--')
+        plot([switchOver,switchOver],[min(min(FREPlot)) max(max(FREPlot))],'--')
     hold off
     xlabel('Time (ms)');
     ylabel('Firing Rate (Spikes/sec)');
-    ylim([min(min(FRES1-FRES2)) max(max(FRES1-FRES2))])
+    ylim([min(min(FRES1-FRES2)) max(max(FREPlot))])
     title('Difference in FR')
     
     % Bar chart to compare Akaiki Information for each model;

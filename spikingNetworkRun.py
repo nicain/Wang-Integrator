@@ -10,18 +10,18 @@ import random
 
 # Simulation settings:
 trialRangeBegin=1				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
-trialRangeEnd=1	
+trialRangeEnd=250
 jobNameBase='singleCell1'				# Unique base-name for saving results and plots
 dt = .02;						# Time-step, in ms.
-simDuration = 2000;				# Simulation duration, in ms.
+simDuration = 3000;				# Simulation duration, in ms.
 stimOnset = 1000;				# Time for stimulus onset, in ms.
 
 # Analysis settings:
-analyze = 1;
-analysisType='population';  # 'population' or 'single'
+analyze = 0;
+analysisType='single';  # 'population' or 'single'
 x_label = 'S1';
 y_label = 'S1';
-numberOfTrials = 1;
+numberOfTrials = 10;
 
 # Declare strings that vary between OS:
 if sys.platform == 'darwin':
