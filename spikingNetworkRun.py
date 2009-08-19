@@ -9,9 +9,9 @@ import time
 import random
 
 # Simulation settings:
-trialRangeBegin=101				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
-trialRangeEnd=250	
-jobNameBase='2sim_1on'				# Unique base-name for saving results and plots
+trialRangeBegin=1				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
+trialRangeEnd=1	
+jobNameBase='singleCell1'				# Unique base-name for saving results and plots
 dt = .02;						# Time-step, in ms.
 simDuration = 2000;				# Simulation duration, in ms.
 stimOnset = 1000;				# Time for stimulus onset, in ms.
@@ -45,14 +45,14 @@ for i in range(trialRangeBegin,trialRangeEnd + 1):
 	print '    Simulation # ' + str(i) + ' now running...'
 	os.system(runPrefix + 'spikingNetwork ' + str(simDuration/dt) + ' ' + str(stimOnset/dt) + ' ' + str(dt))
 	print '    Compiling results ...'
-	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); getFR(\'' + jobName + '\'' + ',0,' + str(simDuration) + ',' + str(dt) + ');exit"')
+	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); getSpikes(\'' + jobName + '\'' + str(simDuration) + ',' + str(dt) + ');exit"')
 
 # Find AIC for this trial:
 if analyze == 1:
 	print '  Performing model comparison ...'
 	os.system('matlab ' + matlabSettings + ' "cd(\'' + os.getcwd() + '\'); spikeRateAnalysis(\'' + jobNameBase + '\'' + ',' + str(numberOfTrials) + ',' + str(stimOnset) + ',\'' + x_label + '\',\'' + y_label + '\',1);exit"')
 else:
-	print '  Skipping model comparison'
+	print '  Skipping model comparison'
 # Finalize
 tEnd = time.mktime(time.localtime())
 secondsToCompute=tEnd-tBegin
