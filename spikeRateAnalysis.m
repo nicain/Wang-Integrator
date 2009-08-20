@@ -408,7 +408,7 @@ function [FRE1,FRE2,plotT]=getFR(spikeMatrix,Time,dt,increment,w)
     E2 = Eall * f;
 
     % Calculating the firing rate, sp/sec: 
-    totalLength=floor((Time/dt-w/dt-1)/(increment/dt));
+    totalLength=floor((Time/dt-w/dt)/(increment/dt));
     FRE1=zeros(totalLength,1);
     FRE2=zeros(totalLength,1);
     plotT=zeros(totalLength,1);
