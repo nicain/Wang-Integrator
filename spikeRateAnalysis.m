@@ -8,7 +8,7 @@ loadDirectory=[workingDirectory,'/savedResults'];
 % Declare settings:
 maxEval=5000;
 maxIter=5000;
-increment=1;
+increment=5;
 w=20;
 
 % Upload data:
