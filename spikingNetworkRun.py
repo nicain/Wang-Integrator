@@ -10,11 +10,11 @@ import random
 
 # Simulation settings:
 trialRangeBegin=1				# trialRangeBegin - trialRangeEnd = Number of calls of the spikingNetwork.c file
-trialRangeEnd=250
-jobNameBase='singleCell1'				# Unique base-name for saving results and plots
+trialRangeEnd=2
+jobNameBase='crossStudy1'				# Unique base-name for saving results and plots
 dt = .02;						# Time-step, in ms.
-simDuration = 3000;				# Simulation duration, in ms.
-stimOnset = 1000;				# Time for stimulus onset, in ms.
+simDuration = 10000;				# Simulation duration, in ms.
+stimOnset = 10000;				# Time for stimulus onset, in ms.
 
 # Analysis settings:
 analyze = 0;
